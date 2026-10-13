@@ -1,6 +1,6 @@
 return {
-    stories = {
-        desc = "故事架构",
+    timeline = {
+        desc = "故事时间轴",
         lines = {
             "---",
             "title: ",
@@ -12,8 +12,8 @@ return {
         cursor = { row = 2, col = 7 },
         enter_insert = true,
     },
-    draft = {
-        desc = "正文",
+    stories = {
+        desc = "故事剧情轴",
         lines = {
             "---",
             "title: ",

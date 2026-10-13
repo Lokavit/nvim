@@ -22,13 +22,11 @@ vim.opt.smartcase = true  -- 除非搜尋關鍵字有大寫，否則不忽略
 
 -- 限制正文的最大文本寬度
 vim.opt.textwidth = 80
-
 -- 啟用自動折行 (Wrap)
 vim.opt.wrap = true
-
 -- 智能折行
 vim.opt.linebreak = true
-
+-- vim.opt.breakat = " "
 -- 保持光標上下有 8 行的餘量
 vim.opt.scrolloff = 8
 
