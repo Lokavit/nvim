@@ -10,13 +10,10 @@ local MONTHS = {
 function M.be_date()
     local t = os.date("*t")
     return string.format(
-        "%02d %s %d BE %02d:%02d:%02d",
+        "%02d %s %d BE",
         t.day,
         MONTHS[t.month],
-        t.year + 543,
-        t.hour,
-        t.min,
-        t.sec
+        t.year + 543
     )
 end
 
