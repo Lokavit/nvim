@@ -10,9 +10,33 @@ local M = {}
 local function update_last_modified(lines)
     local idx = yaml_logic.find_field(lines, "last_modified:")
     if not idx then return end
-    local new_line = "last_modified: '" .. date.be_date() .. "'"
+    local new_line = "last_push: '" .. date.be_date() .. "'"
     vim.api.nvim_buf_set_lines(0, idx - 1, idx, false, { new_line })
 end
+
+-- 统计最后一个 "## xxx" 标题行之后到文件末尾的字数
+local function count_section_words(lines)
+  -- 1. 找到最后一个二级标题行（"## " 开头，排除 "###"）
+  local last_heading = nil
+  for i, line in ipairs(lines) do
+    if line:match("^##%s") then
+      last_heading = i
+    end
+  end
+
+  -- 2. 确定统计起点
+  local start
+  if last_heading then
+    start = last_heading + 1          -- 标题的下一行
+  else
+    start = yaml_logic.find_content_start(lines) -- 没有标题时退回正文起点
+  end
+  if not start or start > #lines then return 0 end
+
+  -- 3. 统计 start 到末尾
+  return wc.count_lines(lines, start)
+end
+
 
 -- 统计并回写字数，同时同步到 statusline
 local function update_word_count(lines)
@@ -21,6 +45,9 @@ local function update_word_count(lines)
 
     local word_count = wc.count_lines(lines, start)
     statusline.word_count = word_count
+
+    -- 新增：当前章节字数
+    statusline.chap_word = count_section_words(lines)
 
     local idx = yaml_logic.find_field(lines, "words:")
     if not idx then return end
